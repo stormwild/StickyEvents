@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Events";
+}
+
+<h2>Events</h2>
+
+<div class="app" data-ng-app="eventsModule">
+
+    <div class="events" data-ng-controller="eventsListCtrl">
+        <button type="button" data-ng-click="changeValue()">Add Event</button>
+        <div class="events-list">
+            <div ng-repeat="event in events" class="event-item">
+                Event {{event.id}} {{event.name}}
+            </div>
+        </div>        
+    </div>
+
+    <div class="map" data-ng-controller="mapCtrl">
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/app.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyA7ywV8I4YAEZ17FiMWGREIFj8UbEVpKGo"></script>
+}
