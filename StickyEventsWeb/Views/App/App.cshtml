@@ -1,28 +1,46 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Events";
 }
 
-<h2>Events</h2>
+@section Styles {
+    <link href="~/Content/app.css" rel="stylesheet" type="text/css" />
+}
 
-<div class="app" data-ng-app="eventsModule">
-
-    <div class="events" data-ng-controller="eventsListCtrl">
-        <button type="button" data-ng-click="changeValue()">Add Event</button>
-        <div class="events-list">
-            <div ng-repeat="event in events" class="event-item">
-                Event {{event.id}} {{event.name}}
-            </div>
-        </div>        
+<div class="row" data-ng-app="eventsModule" data-ng-controller="eventsMapCtrl">
+    <div class="col-md-6">
+        <h3>Events</h3>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="event in events">
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Id</th>
+                        <td>{{event.Id}}</td>
+                    </tr>
+                    <tr>
+                        <th>Name</th>
+                        <td>{{event.Name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Date</th>
+                        <td>{{event.Date}}</td>
+                    </tr>
+                    <tr>
+                        <th>Address</th>
+                        <td>{{event.Address.Address1}}</td>
+                    </tr>
+                </table>
+            </li>
+        </ul>
+        <button class="btn btn-default" ng-click="nextEvent()">Next</button>
     </div>
-
-    <div class="map" data-ng-controller="mapCtrl">
-
+    <div class="col-md-6">
+        <h3>Google Map</h3>
+        <div class="map-canvas" ng-></div>
     </div>
 </div>
 
 @section Scripts {
     <script src="~/Scripts/angular.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7ywV8I4YAEZ17FiMWGREIFj8UbEVpKGo"></script>
     <script src="~/Scripts/app.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyA7ywV8I4YAEZ17FiMWGREIFj8UbEVpKGo"></script>
 }

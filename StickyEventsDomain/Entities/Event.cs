@@ -14,6 +14,6 @@ namespace StickyEventsDomain.Entities
 
         public string Date { get; set; }
 
-        public Address Adddress { get; set; }
+        public Address Address { get; set; }
     }
 }

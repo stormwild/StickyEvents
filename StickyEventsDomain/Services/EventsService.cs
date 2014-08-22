@@ -25,7 +25,7 @@ namespace StickyEventsDomain.Services
                 Id = (int)e.Attribute("id"), 
                 Name = (string)e.Attribute("name"), 
                 Date = (string)e.Attribute("date"), 
-                Adddress = new Address {
+                Address = new Address {
                     Address1 = (string) e.Descendants("address").FirstOrDefault().Attribute("address1"),
                     Address2 = (string) e.Descendants("address").FirstOrDefault().Attribute("address2"),
                     Suburb = (string) e.Descendants("address").FirstOrDefault().Attribute("suburb"),
