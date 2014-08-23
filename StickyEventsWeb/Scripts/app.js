@@ -1,63 +1,166 @@
 ﻿(function () {
 
+    /*
+    1 - Retrieve data from the web api - done, but refactor using resource
+    2 - Get the latLng of the address of the first event - 
+    3 - Initialize the map with the latlng of the first address - working but zoomed out and no marker
+       
+    4 - Btn click cycles through the list of events and displays 
+        and displays the address of the next event on the google map
+    */
     angular.module('eventsModule', [])
-        .controller('eventsMapCtrl', ['$scope', function ($scope, $http) {
+        .controller('eventsMapCtrl', ['$scope', '$http', function ($scope, $http) {
 
-            var events, index = 0;
+            var geocoder, map;
 
-            $scope.events = [{
-                "Id": 1,
-                "Name": "New Years Eve Party",
-                "Date": "31st Decmeber 2012",
-                "Address": {
-                    "Address1": "64 Glebe Place",
-                    "Address2": "",
-                    "Suburb": "PENRITH",
-                    "State": "NSW",
-                    "Country": "Australia"
-                }
-            }, {
-                "Id": 2,
-                "Name": "Treasure Hunt",
-                "Date": "22nd September 2012",
-                "Address": {
-                    "Address1": "615 Thirlmere Way",
-                    "Address2": "",
-                    "Suburb": "PICTON",
-                    "State": "NSW",
-                    "Country": "Australia"
-                }
-            }];
-
-            //$http.get('api/events')
-            //    .success(function (data) {
-            //        $scope.events = data;
-            //    });
-
-            $scope.index = index;            
+            function centerAddressOnMap(address) {    
+                geocoder.geocode({ 'address': address }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        map.setCenter(results[0].geometry.location);
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location
+                        });
+                    } else {
+                        alert('Geocode was not successful for the following reason: ' + status);
+                    }
+                });                
+            }
 
             $scope.nextEvent = function () {
-                if($scope.index > events.length){
+                if ($scope.index + 1 == $scope.events.length) {
                     $scope.index = 0;
                 } else {
                     $scope.index++;
                 }
+                var event = $scope.events[$scope.index];
+                if (event !== 'undefined') {
+                    centerAddressOnMap(event.Address.Address1);
+                }
             };
 
-            var $map = $('.map-canvas')[0];
-
-            var opts = {
-                zoom: 8,
-                center: new google.maps.LatLng(-34.397, 150.644)
-            };
-
-            var map = new google.maps.Map($map, opts);
-
+            $http.get('/api/events/')
+                .success(function (data) {
+                    $scope.events = data;
+                    geocoder = new google.maps.Geocoder();
+                    map = new google.maps.Map($('.map-canvas')[0], {
+                        zoom: 8,
+                        center: new google.maps.LatLng(-34.397, 150.644)
+                    });
+                    $scope.index = 0;
+                    var event = $scope.events[$scope.index];
+                    if (event !== 'undefined') {
+                        centerAddressOnMap(event.Address.Address1);
+                    }
+                });            
         }])
 
 })();
 
+//var geocoder;
+//var map;
+//function initialize() {
+//    geocoder = new google.maps.Geocoder();
+//    var latlng = new google.maps.LatLng(-34.397, 150.644);
+//    var mapOptions = {
+//        zoom: 8,
+//        center: latlng
+//    }
+//    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+//}
 
+//function codeAddress() {
+//    var address = document.getElementById('address').value;
+//    geocoder.geocode({ 'address': address }, function (results, status) {
+//        if (status == google.maps.GeocoderStatus.OK) {
+//            map.setCenter(results[0].geometry.location);
+//            var marker = new google.maps.Marker({
+//                map: map,
+//                position: results[0].geometry.location
+//            });
+//        } else {
+//            alert('Geocode was not successful for the following reason: ' + status);
+//        }
+//    });
+//}
+
+//  
+
+//$scope.events = [{
+//    "Id": 1,
+//    "Name": "New Years Eve Party",
+//    "Date": "31st Decmeber 2012",
+//    "Address": {
+//        "Address1": "64 Glebe Place",
+//        "Address2": "",
+//        "Suburb": "PENRITH",
+//        "State": "NSW",
+//        "Country": "Australia"
+//    }
+//}, {
+//    "Id": 2,
+//    "Name": "Treasure Hunt",
+//    "Date": "22nd September 2012",
+//    "Address": {
+//        "Address1": "615 Thirlmere Way",
+//        "Address2": "",
+//        "Suburb": "PICTON",
+//        "State": "NSW",
+//        "Country": "Australia"
+//    }
+//}];
+
+//{                            
+//    "status": "OK",
+//    "results": [ {
+//        "types": [ "locality", "political" ],
+//        "formatted_address": "Winnetka, IL, USA",
+//        "address_components": [ {
+//            "long_name": "Winnetka",
+//            "short_name": "Winnetka",
+//            "types": [ "locality", "political" ]
+//        }, {
+//            "long_name": "Illinois",
+//            "short_name": "IL",
+//            "types": [ "administrative_area_level_1", "political" ]
+//        }, {
+//            "long_name": "United States",
+//            "short_name": "US",
+//            "types": [ "country", "political" ]
+//        } ],
+//        "geometry": {
+//            "location": {
+//                "lat": 42.1083080,
+//                "lng": -87.7417070
+//            },
+//            "location_type": "APPROXIMATE",
+//            "viewport": {
+//                "southwest": {
+//                    "lat": 42.0917501,
+//                    "lng": -87.7737218
+//                },
+//                "northeast": {
+//                    "lat": 42.1248616,
+//                    "lng": -87.7096922
+//                }
+//            },
+//            "bounds": {
+//                "southwest": {
+//                    "lat": 42.0885320,
+//                    "lng": -87.7715480
+//                },
+//                "northeast": {
+//                    "lat": 42.1284090,
+//                    "lng": -87.7110160
+//                }
+//            }
+//        }
+//    } ]
+//}
+
+
+// http://ericpanorel.net/2013/08/11/angularjs-and-google-maps/
+// http://jsfiddle.net/ramandv/xSPAA/
 //'use strict';
 //gApp.controller('CtrlGMap',
 //    function CtrlGMap($scope) {
