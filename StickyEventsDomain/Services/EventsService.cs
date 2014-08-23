@@ -19,19 +19,21 @@ namespace StickyEventsDomain.Services
         }
 
         public IQueryable<Event> Get()
-        {   
+        {
             var eventsXml = XDocument.Load(_path);
-            return eventsXml.Root.Elements().Select(e => new Event { 
-                Id = (int)e.Attribute("id"), 
-                Name = (string)e.Attribute("name"), 
-                Date = (string)e.Attribute("date"), 
-                Address = new Address {
-                    Address1 = (string) e.Descendants("address").FirstOrDefault().Attribute("address1"),
-                    Address2 = (string) e.Descendants("address").FirstOrDefault().Attribute("address2"),
-                    Suburb = (string) e.Descendants("address").FirstOrDefault().Attribute("suburb"),
-                    State = (string) e.Descendants("address").FirstOrDefault().Attribute("state"),
-                    Country = (string) e.Descendants("address").FirstOrDefault().Attribute("country")
-                } 
+            return eventsXml.Root.Elements().Select(e => new Event
+            {
+                Id = (int)e.Attribute("id"),
+                Name = (string)e.Attribute("name"),
+                Date = (string)e.Attribute("date"),
+                Address = new Address
+                {
+                    Address1 = (string)e.Descendants("address").FirstOrDefault().Attribute("address1"),
+                    Address2 = (string)e.Descendants("address").FirstOrDefault().Attribute("address2"),
+                    Suburb = (string)e.Descendants("address").FirstOrDefault().Attribute("suburb"),
+                    State = (string)e.Descendants("address").FirstOrDefault().Attribute("state"),
+                    Country = (string)e.Descendants("address").FirstOrDefault().Attribute("country")
+                }
             }).AsQueryable();
         }
     }

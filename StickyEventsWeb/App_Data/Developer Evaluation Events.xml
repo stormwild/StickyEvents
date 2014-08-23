@@ -6,4 +6,7 @@
 	<event id="2" name="Treasure Hunt" date="22nd September 2012">
 		<address address1="615 Thirlmere Way" address2="" suburb="PICTON" state="NSW" country="Australia" />
 	</event>
+  <event id="3" name="Ninoy Day" date="21 August 2014">
+		<address address1="2/54 Anzac Ave" address2="" suburb="REDCLIFFE" state="QLD" country="Australia" />
+	</event>
 </events>

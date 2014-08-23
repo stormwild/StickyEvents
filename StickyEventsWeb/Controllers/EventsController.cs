@@ -15,11 +15,9 @@ namespace StickyEventsWeb.Controllers
     {
         private IEventsService _eventsService;
 
-        public EventsController()
+        public EventsController(IEventsService eventService)
         {
-            // Refactor to use dependency injection
-            string path = HostingEnvironment.MapPath("~/App_Data/Developer Evaluation Events.xml");
-            _eventsService = new EventsService(path);
+            _eventsService = eventService;
         }
 
         // GET: api/Events
