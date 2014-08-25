@@ -59,7 +59,7 @@
                     $scope.index++;
                 }
                 var event = $scope.events[$scope.index];
-                if (event !== 'undefined') {
+                if (typeof event !== 'undefined') {
                     centerAddressOnMap(getCompleteAddress(event));
                 }
             };
@@ -75,7 +75,7 @@
                     });
                     $scope.index = 0;
                     var event = $scope.events[$scope.index];
-                    if (event !== 'undefined') {
+                    if (typeof event !== 'undefined') {
                         centerAddressOnMap(getCompleteAddress(event));
                     }
                 });            
